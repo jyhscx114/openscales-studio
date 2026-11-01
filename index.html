@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenScales Studio — Open Scale Definition library</title>
+<meta name="description" content="A zero-dependency front end for administering OpenScales OSD instruments: browse, run, score and export.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234f46e5'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='21' font-family='system-ui,sans-serif' font-size='13' font-weight='700' fill='%23fff' text-anchor='middle'%3EOS%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="assets/scale-runner.css">
+<script>
+  // Set the theme before first paint so there is no light flash in dark mode.
+  (function () {
+    try {
+      var t = localStorage.getItem('os_studio.theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'light'); }
+  })();
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#/library">
+      <span class="brand-mark">OS</span>
+      <span class="brand-text">
+        <strong>OpenScales Studio</strong>
+        <small>Open Scale Definition library</small>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="#/library" data-view="library">Library</a>
+      <a href="#/history" data-view="history">History</a>
+      <a href="#/import"  data-view="import">Import</a>
+    </nav>
+
+    <div class="topbar-right">
+      <label class="lang">
+        <span>Language</span>
+        <select id="langSelect" aria-label="Administration language"></select>
+      </label>
+      <button class="icon-btn" id="themeToggle" type="button" title="Toggle colour theme"
+              aria-label="Toggle colour theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- ── Library ─────────────────────────────────────────────── -->
+  <section id="view-library" class="view">
+    <div class="hero">
+      <h1>Administer validated instruments in your browser.</h1>
+      <p>
+        Every OSD scale is packaged locally and runs on-device — no server,
+        no upload, no network access required.
+      </p>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="toolbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <input id="q" type="search" placeholder="Search name, abbreviation, code or description…" autocomplete="off">
+      </div>
+      <div class="selects">
+        <select id="fPack"><option value="">All collections</option></select>
+        <select id="fDomain"><option value="">All domains</option></select>
+        <select id="fLicense"><option value="">All licences</option></select>
+        <select id="fLang"><option value="">All languages</option></select>
+        <select id="fSort">
+          <option value="name">Sort: A–Z</option>
+          <option value="items-asc">Sort: fewest items</option>
+          <option value="items-desc">Sort: most items</option>
+          <option value="norms">Interpretation available</option>
+        </select>
+      </div>
+      <button id="btnReset" class="ghost" type="button">Reset</button>
+    </div>
+
+    <p class="result-line"><span id="resultCount">—</span></p>
+    <div id="grid" class="grid"></div>
+    <div id="moreWrap" class="more" hidden>
+      <button class="ghost" type="button" data-action="more">Show more</button>
+      <span id="moreNote"></span>
+    </div>
+    <div id="emptyState" class="empty" hidden>
+      <p>No scale matches those filters.</p>
+      <button class="ghost" type="button" data-action="reset">Clear filters</button>
+    </div>
+  </section>
+
+  <!-- ── Scale detail ────────────────────────────────────────── -->
+  <section id="view-detail" class="view" hidden></section>
+
+  <!-- ── Runner ──────────────────────────────────────────────── -->
+  <section id="view-run" class="view" hidden>
+    <div class="run-head">
+      <button class="back" type="button" data-action="to-detail">← Back to scale</button>
+      <div class="run-head-text">
+        <span id="runCode" class="chip"></span>
+        <span id="runLang" class="chip chip-soft"></span>
+      </div>
+    </div>
+    <article id="resultCard" class="card result" hidden></article>
+    <div id="runnerHost" class="card runner"></div>
+  </section>
+
+  <!-- ── History ─────────────────────────────────────────────── -->
+  <section id="view-history" class="view" hidden>
+    <div class="hero hero-tight">
+      <h1>Session history</h1>
+      <p>Stored in this browser only. Clearing site data removes it permanently.</p>
+    </div>
+    <div class="toolbar toolbar-row">
+      <button class="ghost" type="button" id="btnExportAll">Export all rows (CSV)</button>
+      <button class="ghost danger" type="button" id="btnClearHistory">Clear history</button>
+    </div>
+    <div id="historyList"></div>
+  </section>
+
+  <!-- ── Import ──────────────────────────────────────────────── -->
+  <section id="view-import" class="view" hidden>
+    <div class="hero hero-tight">
+      <h1>Run your own OSD file</h1>
+      <p>Drop a <code>.osd</code> bundle or any OSD JSON. Nothing leaves the device — the file is parsed locally.</p>
+    </div>
+    <div id="dropzone" class="dropzone">
+      <p><strong>Drop file here</strong> or <label class="link">browse<input id="fileInput" type="file" accept=".osd,.json,application/json"></label></p>
+      <small>Bundle format: <code>{ osd_version, definition, translations }</code></small>
+      <p id="importError" class="error" hidden></p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p>
+      Data: <a href="https://github.com/stmueller/OpenScales" target="_blank" rel="noopener">OpenScales</a> ·
+      Runner: <code>scale-runner.js</code> (MIT) ·
+      Licences apply per scale — check each record before reuse.
+    </p>
+    <p class="disclaimer">
+      Screening instruments support research and self-monitoring. They do not provide a diagnosis.
+      Seek a qualified clinician for interpretation.
+    </p>
+  </div>
+</footer>
+
+<div id="bootError" class="boot-error" hidden>
+  <div class="card">
+    <h2>Scale data not found</h2>
+    <p>
+      This build ships without bundled data. Run the packager against an
+      <a href="https://github.com/stmueller/OpenScales" target="_blank" rel="noopener">OpenScales</a> checkout:
+    </p>
+    <pre>python3 tools/build_data.py --source ../OpenScales</pre>
+    <p>Then reload this page.</p>
+  </div>
+</div>
+
+<script src="data/manifest.js"></script>
+<script src="assets/scale-runner.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
