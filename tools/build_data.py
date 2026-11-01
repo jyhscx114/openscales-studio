@@ -36,6 +36,8 @@ that goes beyond internal work.
 from __future__ import annotations
 
 import direction  # inverted-agreement-scale detection/repair (see tools/direction.py)
+import zhpack     # machine-translated Chinese folded in as a "zh" block
+import localize   # Chinese UI literals re-applied to the vendored runner
 
 import argparse
 import json
@@ -145,7 +147,8 @@ def collect_osd_files(source: Path, pack: str):
     return sorted(root.glob("*/*.osd"))
 
 
-def build(source: Path, out: Path, packs: list[str], fix_direction: bool = True) -> int:
+def build(source: Path, out: Path, packs: list[str],
+          fix_direction: bool = True, add_zh: bool = True) -> int:
     out.mkdir(parents=True, exist_ok=True)
     (out / "data").mkdir(exist_ok=True)
     (out / "data" / "scales").mkdir(exist_ok=True)
@@ -155,6 +158,19 @@ def build(source: Path, out: Path, packs: list[str], fix_direction: bool = True)
     written_js = 0
     bytes_total = 0
     seen_codes = {}
+    zh_keys = 0
+    zh_scales = 0
+
+    # Machine-translated Chinese corpus, produced by tools/translate.py.
+    zh_map: dict[str, str] = {}
+    if add_zh:
+        zh_map = zhpack.load_map()
+        print(f"Chinese corpus       | {len(zh_map):,} translated strings"
+              if zh_map else "Chinese corpus       | not found — skipping (run tools/translate.py)")
+    else:
+        print("  Chinese block      | DISABLED (--no-zh)")
+    # Built after load_map so the closure sees the populated corpus.
+    meta_zh = zhpack.meta_lookup(zh_map)
 
     # Pass 1 — learn which endpoint order each label family actually uses.
     # The correction is calibrated against the corpus itself, never hardcoded.
@@ -190,6 +206,11 @@ def build(source: Path, out: Path, packs: list[str], fix_direction: bool = True)
 
             definition = bundle["definition"] or {}
             translations = bundle.get("translations") or {}
+            n_zh = zhpack.add_chinese(translations, zh_map) if zh_map else None
+            if n_zh:
+                zh_scales += 1
+                zh_keys += n_zh
+                bundle["translations"] = translations  # survives bundles lacking the key
             info = definition.get("scale_info") or {}
             code = info.get("code") or path.stem
 
@@ -264,15 +285,21 @@ def build(source: Path, out: Path, packs: list[str], fix_direction: bool = True)
             manifest.append({
                 "code": code,
                 "name": info.get("name") or code,
+                "name_zh": meta_zh(info.get("name")) or info.get("name") or code,
                 "abbreviation": info.get("abbreviation") or "",
                 "description": info.get("description") or "",
+                "description_zh": meta_zh(info.get("description")) or info.get("description") or "",
                 "citation": info.get("citation") or "",
                 "license": info.get("license") or "unspecified",
+                "license_zh": zhpack.license_zh(info.get("license")),
                 "license_url": info.get("license_url") or "",
                 "license_explanation": info.get("license_explanation") or "",
+                "license_explanation_zh": meta_zh(info.get("license_explanation"))
+                                          or info.get("license_explanation") or "",
                 "version": info.get("version") or "",
                 "url": info.get("url") or "",
                 "domain": info.get("domain") or "Uncategorized",
+                "domain_zh": meta_zh(info.get("domain")) or info.get("domain") or "未分类",
                 "items_count": count_items(definition),
                 "dimensions": summarize_scales(definition),
                 "languages": langs,
@@ -322,10 +349,21 @@ def build(source: Path, out: Path, packs: list[str], fix_direction: bool = True)
     if missing:
         return 1
 
+    # Chinese UI strings for the runner. Upstream owns this file, so the
+    # localisation has to be re-applied on every build rather than hand-edited.
+    runner_path = out / "assets" / "scale-runner.js"
+    runner_js, zh_misses = localize.apply(runner_path.read_text(encoding="utf-8"))
+    if zh_misses:
+        print("  ! runner no longer matches the Chinese UI literals; refusing to build")
+        for line in zh_misses:
+            print(f"      {line}")
+        return 1
+    runner_path.write_text(runner_js, encoding="utf-8")
+    print(f"  runner UI          | localised ({len(localize.REPLACEMENTS)} strings)")
+
     # The double-callback guard lives in upstream's runner, but nothing stops a
     # future release from dropping it — and its loss silently duplicates every
     # session record. Fail loudly instead.
-    runner_js = (out / "assets" / "scale-runner.js").read_text(encoding="utf-8")
     if "navGeneration" not in runner_js:
         print("  ! runner lost its stale-timer guard (navGeneration); refusing to build")
         return 1
@@ -354,6 +392,7 @@ def build(source: Path, out: Path, packs: list[str], fix_direction: bool = True)
                   f"→ {entry['endpoints']['last_option'][:26]}")
     if not fix_direction:
         print("  direction repairs       | DISABLED (--no-fix-direction)")
+    print(f"  Chinese block     | {zh_scales} scales, {zh_keys:,} keys folded in as \"zh\"")
     print(f"  languages         | {len(langs)} ({', '.join(langs[:12])}{'…' if len(langs) > 12 else ''})")
     print(f"  output            | {out}")
     return 0
@@ -370,6 +409,8 @@ def main() -> int:
                     help="Comma-separated packs; defaults to all of them.")
     ap.add_argument("--no-fix-direction", action="store_true",
                     help="Skip the inverted-agreement-scale repair (see tools/direction.py).")
+    ap.add_argument("--no-zh", action="store_true",
+                    help="Skip folding the machine-translated Chinese corpus in as a \"zh\" block.")
     args = ap.parse_args()
 
     source = Path(args.source).expanduser().resolve()
@@ -380,7 +421,8 @@ def main() -> int:
 
     packs = [p.strip() for p in args.include.split(",") if p.strip()]
     return build(source, Path(args.out).expanduser().resolve(), packs,
-                 fix_direction=not args.no_fix_direction)
+                 fix_direction=not args.no_fix_direction,
+                 add_zh=not args.no_zh)
 
 
 if __name__ == "__main__":

@@ -56,10 +56,16 @@ openscales-studio/
 ├── data/
 │   ├── manifest.js         every scale's metadata as a plain assignment
 │   ├── direction-audit.json  bundles whose agreement axis was repaired
-│   └── scales/*.js         1,095 self-registering bundles, 24.2 MB total
+│   ├── translate.sqlite3   Chinese translation corpus (item + metadata strings)
+│   └── scales/*.js         1,095 self-registering bundles, Chinese included
 ├── tools/
 │   ├── build_data.py       repackages an OpenScales checkout into data/
-│   └── direction.py        detects and repairs inverted agreement scales
+│   ├── direction.py        detects and repairs inverted agreement scales
+│   ├── zhpack.py           folds the corpus into bundles / manifest fields
+│   ├── localize.py         Chinese runner chrome, re-applied at every build
+│   ├── translate.py        iFlytek Spark batch translator (SQLite job store)
+│   ├── seed_meta.py        queues manifest metadata for translation
+│   └── inject_zh.py        re-keys built bundles when no checkout is available
 └── vendor/                 upstream material kept for offline reference
     ├── runner-original/    unmodified runner + chain-runner + scale-printer + server/
     ├── converters/         44 scripts: REDCap, Qualtrics, LimeSurvey, QTI, formr,
@@ -95,6 +101,48 @@ git clone https://github.com/stmueller/OpenScales.git
 python3 tools/build_data.py --source ../OpenScales          # all packs
 python3 tools/build_data.py --source ../OpenScales --include openscales,phenx
 ```
+
+## Chinese localisation (Simplified Chinese)
+
+The interface is Chinese-first. Item text, option labels, scale names,
+descriptions, domains and licence prose are translated; the English original
+stays available (language selector, and `*_zh` fields sit beside the raw ones
+in the manifest), because these are validated instruments whose English titles
+are how the literature cites them.
+
+What is translated, and how:
+
+| Layer | Source | Count |
+|---|---|---|
+| Item text & response options | iFlytek Spark batch translation, folded into each bundle as a `zh` block | 93,753 keys across 1,093 scales (99.7 % of translatable strings) |
+| Runner chrome (NEXT/BACK, validation, end-of-session screens) | `tools/localize.py`, re-applied at every build | 19 strings |
+| Shell chrome (`index.html`, `app.js`) | hand-translated in place | — |
+| Manifest metadata (names, domains, descriptions, licence prose) | same corpus pipeline via `tools/seed_meta.py` | ~2,100 strings |
+
+Deliberately **not** translated: CC licence identifiers (`CC BY-NC-SA 4.0`),
+ISO language codes shown beside their Chinese names, scale abbreviations
+(`PHQ9`), citations, and the `.osd` extension.
+
+Untranslated strings fall back to English rather than leaking a raw key — the
+runner picks a whole language block, so `zh` blocks are built from the English
+strings first and overridden by the corpus, and any human-authored Chinese
+already in a bundle wins outright.
+
+The translation corpus lives in `data/translate.sqlite3` (22.4 k item strings +
+2.1 k metadata strings), so rebuilding never re-spends API tokens. Workflow:
+
+```bash
+python3 tools/seed_meta.py          # queue manifest metadata (idempotent)
+export IFLYTEK_API_KEY=...          # Spark MaaS key
+python3 tools/translate.py          # translate pending strings
+python3 tools/build_data.py --source ../OpenScales
+python3 tools/build_data.py --source ../OpenScales --no-zh   # skip folding
+```
+
+`tools/inject_zh.py` re-keys already-built `data/scales/*.js` in place when no
+upstream checkout is reachable. Runner localisation cannot be skipped: if
+upstream drifts and a literal no longer matches, the build stops instead of
+shipping English chrome silently.
 
 ## Scoring-direction repairs in the data
 

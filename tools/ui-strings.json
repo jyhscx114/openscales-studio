@@ -1,0 +1,1227 @@
+{
+ "\" is not part of this bundle.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "\" style=\"width:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "\" target=\"_blank\" rel=\"noopener\">Licence</a>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "\" target=\"_blank\" rel=\"noopener\">Source</a>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "\">Run again</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "\">Start administration</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#bootError": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#btnClearHistory": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#btnExportAll": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#btnReset": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#dropzone": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#emptyState": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#fDomain": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#fLang": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#fLicense": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#fPack": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#fSort": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#fileInput": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#grid": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#grid .scale-card": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#historyList": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#importError": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#langSelect": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#moreNote": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#moreWrap": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#nav a": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#q": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#resultCard": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#resultCount": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#runCode": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#runLang": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#runnerHost": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#stats": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#themeToggle": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#view-": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "#view-detail": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "%\" title=\"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "&& !nextBtn.disabled) {\n          document.removeEventListener(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "(MIT) ·\n      Licences apply per scale — check each record before reuse.": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "(optional)": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ")\n      .replace(/\\*/g,": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ")  { tokens.push({ type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ") return": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ") {\n        const skipBtn = el(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ") {\n        tokens.push({ type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ") {\n      const parts = tok.value.split(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ") {\n      const s = String(response ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ") {\n      return { valid: false, error:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ") { tokens.push({ type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ") || a.includes(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ").join(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ").replace(/\\?/g,": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ").split(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ")</option>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ ",\n        config.baseURL  ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ",\n        strings[": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ",\n      scale:        config.scale ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ",        new Blob([reportHTML], {type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ",       config.scale ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ",       config.token  ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ",      config.participant ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ",    config.scale  ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ", ...dims, ...tDims.map(d => d +": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ", ...qIds, ...dims, ...tDims.map(d => d +": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ", config.participant ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ", config.scale ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ", csvLines[0] ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ", new Blob([reportHTML], {type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ", note: spec.norms.source ||": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ ".csv": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ ".hist-item": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ ".includes(ch)) {\n        tokens.push({ type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ".scale-card": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ ".sr-likert-btn": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ".sr-option-btn": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ".view": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "/g,": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "/g, '": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ":    return Array.isArray(rhsRaw)\n        ? rhsRaw.map(String).includes(lhsStr)\n        : String(rhsRaw).split(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ": (selected.has(v) ?": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ": (selected.has(val) ?": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ ": return Array.isArray(rhsRaw)\n        ? !rhsRaw.map(String).includes(lhsStr)\n        : !String(rhsRaw).split(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "</article>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</aside>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</code> ·": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</dd>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</div>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</dl>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</h2>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</h3>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</p>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</span>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "</ul>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<a class=\"chip chip-accent\" style=\"padding:8px 12px\" href=\"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<a class=\"chip\" style=\"padding:8px 12px\" href=\"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<article class=\"card hist-item\" data-id=\"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<article class=\"card scale-card\" data-code=\"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<aside class=\"card detail-side\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"back\" type=\"button\" data-action=\"to-library\">← Back to library</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"ghost danger\" type=\"button\" data-action=\"hist-del\">Delete</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"ghost\" type=\"button\" data-action=\"export-csv\">Trial data (CSV)</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"ghost\" type=\"button\" data-action=\"export-json\">Session (JSON)</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"ghost\" type=\"button\" data-action=\"export-pooled\">Summary row (CSV)</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"ghost\" type=\"button\" data-action=\"export-report\">Report (HTML)</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"ghost\" type=\"button\" data-action=\"hist-csv\">CSV</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"ghost\" type=\"button\" data-action=\"hist-json\">JSON</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"ghost\" type=\"button\" data-action=\"to-history\">History</button>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"primary\" type=\"button\" data-action=\"again\" data-code=\"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<button class=\"primary\" type=\"button\" data-action=\"start\" data-code=\"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"actions\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"card detail-main\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"detail-body\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"detail-grid\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"gauge\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"gauge-track\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"interp\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"label\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"meta-row\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"note\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"ops\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"score-box\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"score-grid\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"scores\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"top\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<div class=\"value\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<dl class=\"kv\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<h2>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<h3>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<hr>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "<input id=\"participantInput\" type=\"text\" placeholder=\"Participant ID (optional)\" maxlength=\"40\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<option value=\"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<p class=\"citation\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<p class=\"desc\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<p class=\"detail-sub\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<p class=\"repair-note\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<p class=\"sub\">Participant <code>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<p class=\"sub\">This instrument declares no numeric dimensions.</p>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<p>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<p>No report generated.</p>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"chip chip-code\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"chip chip-good\">interpretation</span>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"chip chip-repair\">scoring fixed</span>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"chip chip-soft\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"chip chip-soft\">no dimensions</span>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"chip\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"gauge-cursor\" style=\"left:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"gauge-seg": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span class=\"when\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<span>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "<th>Interpretation</th>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "<th>Transformed</th>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "<ul class=\"dim-list\">": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "=4, ...\n    // Expand multicheck responses: responseMap[": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "? [] : String(responseVal).split(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "? [] : String(val).split(": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "? responseVal :": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "? val :": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "Administer validated instruments in your browser.": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Administration language": {
+  "zh": "",
+  "kind": "html-attr",
+  "file": "index.html"
+ },
+ "All collections": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "All domains": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "All languages": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "All licences": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Bundle format:": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Clear filters": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Clear history": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Could not read that file.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "DOMContentLoaded": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "Delete all": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "Download report": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "Download trial-by-trial data": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "Drop a": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Drop file here": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Expected a JSON object.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "Export all rows (CSV)": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "History": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Import": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Interpretation available": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Language": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Library": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Missing a \"definition\" key — this is not an OSD bundle.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "N/A": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "No description provided.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "No pooled rows captured yet.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "No scale matches those filters.": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Not valid JSON:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "Note: Your responses could not be uploaded automatically.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "Open Scale Definition library": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "OpenScales": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "OpenScales Studio": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "OpenScales Studio — Open Scale Definition library": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "PHQ9": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "Please contact the researcher.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "Reset": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Run your own OSD file": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Scale \"": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "Scale data not found": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Scoring note — this bundle shipped with its agreement options": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "Search name, abbreviation, code or description…": {
+  "zh": "",
+  "kind": "html-attr",
+  "file": "index.html"
+ },
+ "See data/direction-audit.json.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "Session history": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Show more": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Sort: A–Z": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Sort: fewest items": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Sort: most items": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Stored in this browser only. Clearing site data removes it permanently.": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Then reload this page.": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "Toggle colour theme": {
+  "zh": "",
+  "kind": "html-attr",
+  "file": "index.html"
+ },
+ "[ScaleRunner] Remote image blocked (allow_remote_media=false):": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "[data-action]": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "[image not loaded — remote media not permitted]": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "\\r": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "] || vm[": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "], { type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "].includes(id)) {\n          tokens.push({ type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "].includes(two)) {\n          tokens.push({ type:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "answer.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "application/json": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "bundle or any OSD JSON. Nothing leaves the device — the file is parsed locally.": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "checkout:": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "computed.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "items ·": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "items</span>": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "loop.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "network calls": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "openscales-history.csv": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "os_studio.filters": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "os_studio.history.v1": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "os_studio.lang": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "os_studio.theme": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "param.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "python3 tools/build_data.py --source ../OpenScales": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "recorded sessions?": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "responses · status": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "reversed relative to the convention used elsewhere in the library,": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "s signal\n      const detail = { status:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "score.": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "so agreeing scored the minimum. Item coding was inverted at build": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "text/csv": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "text/html": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "use strict": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/app.js"
+ },
+ "— chain runners see this\n      const detail = { status:": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "← Back to scale": {
+  "zh": "",
+  "kind": "html-text",
+  "file": "index.html"
+ },
+ "→ always show numEl\n      //": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ },
+ "→ show numEl only when this point has no label (null slot)\n      //": {
+  "zh": "",
+  "kind": "js-literal",
+  "file": "assets/scale-runner.js"
+ }
+}

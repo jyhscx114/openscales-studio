@@ -493,6 +493,7 @@ table.raw th { color: var(--text-3); font-weight: 550; }
 
 /* ── Boot error ──────────────────────────────────────────── */
 .boot-error { padding: 44px 24px; display: grid; place-items: center; }
+.boot-error[hidden] { display: none; }
 .boot-error .card { padding: 26px; max-width: 540px; }
 .boot-error h2 { margin: 0 0 8px; font-size: 17px; }
 .boot-error pre {

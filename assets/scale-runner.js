@@ -652,7 +652,7 @@ const ScaleRunner = (() => {
     const isRequired = isQuestionRequired(qdef);
     const isEmpty = response === null || response === undefined || response === '';
     if (isRequired && isEmpty && qdef.type !== 'multicheck') {
-      return { valid: false, error: 'This question requires an answer.' };
+      return { valid: false, error: '此题为必答。' };
     }
 
     // Type-specific validation
@@ -692,17 +692,17 @@ const ScaleRunner = (() => {
         const minErr = v.min_error !== undefined ? v.min_error : v.number_min_error;
         const maxErr = v.max_error !== undefined ? v.max_error : v.number_max_error;
         if (isNaN(n)) {
-          return { valid: false, error: 'Please enter a valid number.' };
+          return { valid: false, error: '请输入有效数字。' };
         }
         if (numMin !== undefined && n < numMin) {
           return { valid: false, error: minErr
             ? resolveText(minErr, strings, params)
-            : `Please enter a value of ${numMin} or more.` };
+            : `请输入不小于 ${numMin} 的值。` };
         }
         if (numMax !== undefined && n > numMax) {
           return { valid: false, error: maxErr
             ? resolveText(maxErr, strings, params)
-            : `Please enter a value of ${numMax} or less.` };
+            : `请输入不大于 ${numMax} 的值。` };
         }
       }
 
@@ -818,7 +818,7 @@ const ScaleRunner = (() => {
         );
         const placeholder = document.createElement('div');
         placeholder.className = 'sr-media-placeholder';
-        placeholder.textContent = '[image not loaded — remote media not permitted]';
+        placeholder.textContent = '[图片未能加载——已禁止加载远程媒体]';
         wrap.appendChild(placeholder);
       } else {
         const imgWrap = document.createElement('div');
@@ -2271,7 +2271,7 @@ const ScaleRunner = (() => {
     container.className = 'sr-container';
 
     // ── Loading state ──────────────────────────────────────────
-    const loadingEl = el('div', 'sr-loading', '<span class="sr-spinner"></span><p>Loading…</p>');
+    const loadingEl = el('div', 'sr-loading', '<span class="sr-spinner"></span><p>加载中…</p>');
     container.appendChild(loadingEl);
 
     // ── Load scale ────────────────────────────────────────────
@@ -2366,7 +2366,7 @@ const ScaleRunner = (() => {
     // ── Demo mode banner ──────────────────────────────────────
     if (config.demo) {
       const demoBanner = el('div', 'sr-demo-banner',
-        '🔍 <strong>Demo mode</strong> — responses are not saved or uploaded.');
+        '🔍 <strong>演示模式</strong> — 作答不会保存或上传。');
       container.insertBefore(demoBanner, header);
     }
 
@@ -2534,7 +2534,7 @@ const ScaleRunner = (() => {
       if (canGoBack) {
         const backBtn = el('button', 'sr-back-btn');
         backBtn.type = 'button';
-        backBtn.textContent = strings['back_label'] || 'BACK';
+        backBtn.textContent = strings['back_label'] || '上一题';
         backBtn.addEventListener('click', () => goBack());
         btnRow.appendChild(backBtn);
       }
@@ -2543,7 +2543,7 @@ const ScaleRunner = (() => {
       if (!required && qdef.type !== 'inst' && qdef.type !== 'image') {
         const skipBtn = el('button', 'sr-skip-btn');
         skipBtn.type = 'button';
-        skipBtn.textContent = strings['skip_label'] || 'SKIP';
+        skipBtn.textContent = strings['skip_label'] || '跳过';
         skipBtn.addEventListener('click', () => {
           const skipRT = nowMs() - state.timestamps[qi];
           state.responses[qi]  = 'NA';
@@ -2556,7 +2556,7 @@ const ScaleRunner = (() => {
 
       nextBtn = el('button', 'sr-next-btn');
       nextBtn.type = 'button';
-      nextBtn.textContent = strings['next_label'] || 'NEXT';
+      nextBtn.textContent = strings['next_label'] || '下一题';
       // Next is enabled if: a prevResponse exists (re-visit), or question is non-required, or type is inst/image
       nextBtn.disabled = required && qdef.type !== 'inst' && qdef.type !== 'image' && prevResponse === undefined;
 
@@ -2564,7 +2564,7 @@ const ScaleRunner = (() => {
         const val = currentResponse;
         const result = validateResponse(qdef, val, strings, state.params);
         if (!result.valid) {
-          errorEl.textContent = result.error || 'Please answer this question.';
+          errorEl.textContent = result.error || '请先回答本题。';
           nextBtn.disabled = false;
           return;
         }
@@ -2620,7 +2620,7 @@ const ScaleRunner = (() => {
       const pct   = total > 0 ? Math.round((answered / total) * 100) : 0;
       progressFill.style.width = `${pct}%`;
       progressFill.setAttribute('aria-valuenow', String(pct));
-      progressText.textContent = `${answered} of ${total}`;
+      progressText.textContent = `第 ${answered} 题 / 共 ${total} 题`;
 
       // Keyboard navigation: Enter = Next
       const keyHandler = (e) => {
@@ -2675,11 +2675,11 @@ const ScaleRunner = (() => {
       // Show termination message
       const msgKey  = gate.terminate_message_key;
       const msgText = (msgKey && strings[msgKey]) || strings['gate_terminated'] ||
-        'Thank you. Based on your responses you are not eligible to continue.';
+        '感谢参与。根据你的作答，你不符合继续作答的条件。';
 
       const wrap = el('div', 'sr-terminate');
       wrap.appendChild(el('h2', 'sr-terminate-heading',
-        strings['terminate_heading'] || 'Session Ended'));
+        strings['terminate_heading'] || '施测已结束'));
       const msgEl = el('p', 'sr-terminate-text');
       msgEl.innerHTML = msgText;
       wrap.appendChild(msgEl);
@@ -2748,7 +2748,7 @@ const ScaleRunner = (() => {
       const debrief = el('div', 'sr-debrief');
       // Completion heading
       debrief.appendChild(el('h2', 'sr-debrief-heading',
-        strings['complete_heading'] || 'Thank you!'));
+        strings['complete_heading'] || '感谢参与！'));
       if (debriefText) {
         const txt = el('p', 'sr-debrief-text');
         txt.innerHTML = debriefText;
@@ -2770,7 +2770,7 @@ const ScaleRunner = (() => {
         rptLink.href      = rptURL;
         rptLink.download  = `${config.scale}-${state.participant}-report.html`;
         rptLink.className = 'sr-report-link';
-        rptLink.textContent = 'Download report';
+        rptLink.textContent = '下载报告';
         main.appendChild(rptLink);
 
         // Trial-by-trial CSV download link
@@ -2780,14 +2780,14 @@ const ScaleRunner = (() => {
         csvLink.href      = csvURL;
         csvLink.download  = `${config.scale}-${state.participant}.csv`;
         csvLink.className = 'sr-report-link';
-        csvLink.textContent = 'Download trial-by-trial data';
+        csvLink.textContent = '下载逐题数据';
         main.appendChild(csvLink);
       }
 
       if (!uploadOK && config.collectURL && !inChain) {
         const note = el('p', 'sr-upload-note',
           'Note: Your responses could not be uploaded automatically. ' +
-          'Please contact the researcher.');
+          '请联系研究人员。');
         main.appendChild(note);
       }
 
@@ -3047,7 +3047,7 @@ const ScaleRunner = (() => {
       : '';
     dataFilesSection = `<hr>
       <h2>Data Files</h2>
-      ${demo ? '<p><em>Demo mode — data was not uploaded to a server.</em></p>' : ''}
+      ${demo ? '<p><em>演示模式 — 数据未上传到服务器。</em></p>' : ''}
       <p>The following data files were generated for this session:</p>
       <ul>
         <li>${csvDataURI

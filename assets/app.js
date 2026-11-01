@@ -17,7 +17,7 @@
     languages: [],
     filters: { q: '', pack: '', domain: '', license: '', lang: '', sort: 'name' },
     limit: 150,
-    lang: 'en',
+    lang: 'zh',
     bundle: null,        // currently loaded OSD bundle
     bundleCode: null,
     imported: null,      // bundle dropped in via the Import view
@@ -47,7 +47,7 @@
       s.src = src;
       s.async = true;
       s.onload = resolve;
-      s.onerror = function () { reject(new Error('Cannot load ' + src)); };
+      s.onerror = function () { reject(new Error('无法加载 ' + src)); };
       document.head.appendChild(s);
     });
   }
@@ -83,9 +83,20 @@
     return /^(https?:|mailto:)/i.test(u) ? u : '';
   }
 
-  function langName(code) {    try {
-      return new Intl.DisplayNames(['en'], { type: 'language' }).of(code) || code.toUpperCase();
-    } catch (e) { return code.toUpperCase(); }
+  // Language names are shown in Chinese; the ISO codes stay visible alongside
+  // them so a reviewer can still match them against the raw bundle data.
+  var langCache = {};
+  function langName(code) {
+    if (langCache[code] !== undefined) return langCache[code];
+    var locales = ['zh-Hans', 'zh'];
+    for (var i = 0; i < locales.length; i++) {
+      try {
+        var n = new Intl.DisplayNames([locales[i]], { type: 'language' }).of(code);
+        if (n && n !== code) { langCache[code] = n; return n; }
+      } catch (e) { /* older engine */ }
+    }
+    langCache[code] = code.toUpperCase();
+    return langCache[code];
   }
 
   // ── storage ──────────────────────────────────────────────
@@ -112,7 +123,7 @@
   var bundleCache = {};
 
   function loadBundle(meta) {
-    if (!meta) return Promise.reject(new Error('Unknown scale'));
+    if (!meta) return Promise.reject(new Error('未知量表'));
     if (bundleCache[meta.code]) return Promise.resolve(bundleCache[meta.code]);
     if (!window.OS_SCALES) window.OS_SCALES = {};
     if (window.OS_SCALES[meta.code]) {
@@ -121,7 +132,7 @@
     }
     return loadScript(meta.file).then(function () {
       var b = window.OS_SCALES && window.OS_SCALES[meta.code];
-      if (!b) throw new Error('Bundle missing for ' + meta.code);
+      if (!b) throw new Error('数据包缺失：' + meta.code);
       bundleCache[meta.code] = b;
       return b;
     });
@@ -252,8 +263,9 @@
       if (f.license && m.license !== f.license) return false;
       if (f.lang && m.languages.indexOf(f.lang) < 0) return false;
       if (!q) return true;
-      var hay = (m.name + ' ' + m.abbreviation + ' ' + m.code + ' ' +
-                 m.domain + ' ' + m.description).toLowerCase();
+      var hay = (m.name + ' ' + m.name_zh + ' ' + m.abbreviation + ' ' + m.code + ' ' +
+                 m.domain + ' ' + m.domain_zh + ' ' + m.description + ' ' +
+                 m.description_zh).toLowerCase();
       return hay.indexOf(q) >= 0;
     });
 
@@ -269,25 +281,29 @@
     return list;
   }
 
+  // Chinese display values, falling back to whatever the bundle shipped.
+  function zhName(m) { return (m && (m.name_zh || m.name)) || ''; }
+  function zhDomain(m) { return (m && (m.domain_zh || m.domain)) || ''; }
+
   function cardHTML(m) {
     var langs = m.languages.length > 4
-      ? m.languages.length + ' languages'
-      : m.languages.join(' · ');
+      ? m.languages.length + ' 种语言'
+      : m.languages.map(langName).join(' · ');
     return '' +
       '<article class="card scale-card" data-code="' + esc(m.code) + '">' +
         '<div class="meta-row">' +
           '<span class="chip chip-code">' + esc(m.code) + '</span>' +
-          '<span class="chip">' + esc(m.domain) + '</span>' +
+          '<span class="chip">' + esc(m.domain_zh || m.domain) + '</span>' +
           (m.pack !== 'openscales' ? '<span class="chip chip-soft">' + esc(m.pack) + '</span>' : '') +
-          (m.has_norms ? '<span class="chip chip-good">interpretation</span>' : '') +
-          (m.direction_repaired ? '<span class="chip chip-repair">scoring fixed</span>' : '') +
+          (m.has_norms ? '<span class="chip chip-good">结果解释</span>' : '') +
+          (m.direction_repaired ? '<span class="chip chip-repair">计分已修正</span>' : '') +
         '</div>' +
-        '<h3>' + esc(m.abbreviation ? m.abbreviation + ' — ' + m.name : m.name) + '</h3>' +
-        '<p class="desc">' + esc(m.description || 'No description provided.') + '</p>' +
+        '<h3>' + esc(m.abbreviation ? m.abbreviation + ' — ' + zhName(m) : zhName(m)) + '</h3>' +
+        '<p class="desc">' + esc(m.description_zh || m.description || '暂无描述。') + '</p>' +
         '<div class="meta-row">' +
-          '<span class="chip chip-soft">' + m.items_count + ' items</span>' +
+          '<span class="chip chip-soft">' + m.items_count + ' 题</span>' +
           '<span class="chip chip-soft">' + esc(langs) + '</span>' +
-          '<span class="chip chip-soft">' + esc(m.license) + '</span>' +
+          '<span class="chip chip-soft">' + esc(m.license_zh || m.license) + '</span>' +
         '</div>' +
       '</article>';
   }
@@ -296,8 +312,8 @@
     var list = filtered();
     var slice = list.slice(0, state.limit);
     $('#resultCount').textContent = slice.length === list.length
-      ? list.length + ' scales'
-      : 'showing ' + slice.length + ' of ' + list.length + ' scales';
+      ? list.length + ' 个量表'
+      : '显示 ' + slice.length + ' / ' + list.length + ' 个量表';
     $('#emptyState').hidden = list.length > 0;
     $('#grid').innerHTML = slice.map(cardHTML).join('');
 
@@ -309,7 +325,7 @@
     var more = $('#moreWrap');
     more.hidden = slice.length >= list.length;
     if (!more.hidden) {
-      $('#moreNote').textContent = (list.length - slice.length) + ' more';
+      $('#moreNote').textContent = (list.length - slice.length) + ' 个待显示';
     }
   }
 
@@ -330,8 +346,20 @@
     }
 
     $('#fPack').insertAdjacentHTML('beforeend', opts(packs, function (k) { return k; }));
-    $('#fDomain').insertAdjacentHTML('beforeend', opts(domains, function (k) { return k; }));
-    $('#fLicense').insertAdjacentHTML('beforeend', opts(licenses, function (k) { return k; }));
+    var domainZh = {};
+    state.manifest.forEach(function (m) {
+      if (m.domain_zh && m.domain) domainZh[m.domain] = m.domain_zh;
+    });
+    $('#fDomain').insertAdjacentHTML('beforeend',
+      opts(domains, function (k) { return domainZh[k] || k; }));
+    // Licence labels are localised; the option *value* stays the raw string so
+    // filtering keeps matching the bundle exactly as shipped.
+    var licZh = {};
+    state.manifest.forEach(function (m) {
+      if (m.license_zh && m.license) licZh[m.license] = m.license_zh;
+    });
+    $('#fLicense').insertAdjacentHTML('beforeend',
+      opts(licenses, function (k) { return licZh[k] || k; }));
     $('#fLang').insertAdjacentHTML('beforeend', opts(langs, langName));
 
     $('#fPack').value = state.filters.pack;
@@ -345,10 +373,10 @@
   function renderStats() {
     var packs = (window.OS_PACKS || []).length;
     var rows = [
-      [state.manifest.length, 'scales'],
-      [state.languages.length, 'languages'],
-      [packs, 'collections'],
-      ['0', 'network calls']
+      [state.manifest.length, '量表'],
+      [state.languages.length, '语言'],
+      [packs, '集合'],
+      ['0', '次网络请求']
     ];
     $('#stats').innerHTML = rows.map(function (r) {
       var v = typeof r[0] === 'number' ? r[0].toLocaleString() : r[0];
@@ -383,19 +411,17 @@
   // out loud: a reviewer must be able to see that we touched the scoring.
   function repairNote(m) {
     if (!m.direction_repaired) return '';
-    return 'Scoring note — this bundle shipped with its agreement options '
-         + 'reversed relative to the convention used elsewhere in the library, '
-         + 'so agreeing scored the minimum. Item coding was inverted at build '
-         + 'time; the response order shown to participants is unchanged. '
-         + 'See data/direction-audit.json.';
+    return '计分说明 —— 该数据包原始的赞同选项方向与库中其他量表相反，'
+         + '即「同意」计为最低分。打包时已反转条目计分编码；'
+         + '受试者看到的选项顺序保持不变。详见 data/direction-audit.json。';
   }
 
   function renderDetail(code) {
     var m = getScale(code);
     var host = $('#view-detail');
     if (!m) {
-      host.innerHTML = '<div class="card" style="padding:24px"><h2>Scale not found</h2>' +
-        '<p><a href="#/library">Back to library</a></p></div>';
+      host.innerHTML = '<div class="card" style="padding:24px"><h2>未找到该量表</h2>' +
+        '<p><a href="#/library">返回量表库</a></p></div>';
       return;
     }
 
@@ -405,35 +431,40 @@
 
     host.innerHTML = '' +
       '<div class="card" style="padding:10px 0 0;margin-bottom:14px;border:0;background:none;box-shadow:none">' +
-        '<button class="back" type="button" data-action="to-library">← Back to library</button>' +
+        '<button class="back" type="button" data-action="to-library">← 返回量表库</button>' +
       '</div>' +
       '<div class="detail-grid">' +
         '<div class="card detail-main">' +
-          '<h2>' + esc(m.name) + '</h2>' +
+          '<h2>' + esc(m.name_zh || m.name) + '</h2>' +
           '<p class="detail-sub">' + esc(m.code) + (m.abbreviation ? ' · ' + esc(m.abbreviation) : '') +
-            ' · ' + m.items_count + ' items · ' + esc(m.license) + '</p>' +
+            ' · ' + m.items_count + ' 题 · ' + esc(m.license_zh || m.license) + '</p>' +
           '<div class="detail-body">' +
-            '<p>' + esc(m.description || 'No description provided.') + '</p>' +
+            '<p>' + esc(m.description_zh || m.description || '暂无描述。') + '</p>' +
+            (m.name_zh && m.name_zh !== m.name
+              ? '<p class="citation">' + '原文名：' + esc(m.name) + '</p>' : '') +
             (repairNote(m) ? '<p class="repair-note">' + esc(repairNote(m)) + '</p>' : '') +
             (m.citation ? '<p class="citation">' + esc(m.citation) + '</p>' : '') +
-            (m.license_explanation ? '<p class="citation"><em>' + esc(m.license_explanation) + '</em></p>' : '') +
+            (m.license_explanation
+              ? '<p class="citation"><em>'
+                + esc(m.license_explanation_zh || m.license_explanation)
+                + '</em></p>' : '') +
           '</div>' +
           '<div class="actions">' +
-            '<button class="primary" type="button" data-action="start" data-code="' + esc(m.code) + '">Start administration</button>' +
-            '<input id="participantInput" type="text" placeholder="Participant ID (optional)" maxlength="40">' +
-            (safeUrl(m.url) ? '<a class="chip chip-accent" style="padding:8px 12px" href="' + esc(m.url) + '" target="_blank" rel="noopener">Source</a>' : '') +
-            (safeUrl(m.license_url) ? '<a class="chip" style="padding:8px 12px" href="' + esc(m.license_url) + '" target="_blank" rel="noopener">Licence</a>' : '') +
+            '<button class="primary" type="button" data-action="start" data-code="' + esc(m.code) + '">开始施测</button>' +
+            '<input id="participantInput" type="text" placeholder="受试者编号（选填）" maxlength="40">' +
+            (safeUrl(m.url) ? '<a class="chip chip-accent" style="padding:8px 12px" href="' + esc(m.url) + '" target="_blank" rel="noopener">来源</a>' : '') +
+            (safeUrl(m.license_url) ? '<a class="chip" style="padding:8px 12px" href="' + esc(m.license_url) + '" target="_blank" rel="noopener">许可协议</a>' : '') +
           '</div>' +
         '</div>' +
         '<aside class="card detail-side">' +
           '<dl class="kv">' +
-            '<dt>Domain</dt><dd>' + esc(m.domain) + '</dd>' +
-            '<dt>Version</dt><dd>' + esc(m.version || '—') + '</dd>' +
-            '<dt>Languages</dt><dd>' + m.languages.length + '</dd>' +
-            '<dt>Items</dt><dd>' + m.items_count + '</dd>' +
+            '<dt>领域</dt><dd>' + esc(m.domain) + '</dd>' +
+            '<dt>版本</dt><dd>' + esc(m.version || '—') + '</dd>' +
+            '<dt>语言</dt><dd>' + m.languages.length + '</dd>' +
+            '<dt>题数</dt><dd>' + m.items_count + '</dd>' +
           '</dl>' +
-          '<h4 style="margin:18px 0 0;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Score dimensions</h4>' +
-          '<ul class="dim-list">' + (dims || '<li><span>Not declared</span></li>') + '</ul>' +
+          '<h4 style="margin:18px 0 0;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">计分维度</h4>' +
+          '<ul class="dim-list">' + (dims || '<li><span>未声明</span></li>') + '</ul>' +
         '</aside>' +
       '</div>';
   }
@@ -456,16 +487,16 @@
 
     var boot = fromImport ? Promise.resolve(fromImport)
              : meta ? loadBundle(meta)
-             : Promise.reject(new Error('Scale "' + code + '" is not part of this bundle.'));
+             : Promise.reject(new Error('该量表（' + code + '）不在本数据包内。'));
 
-    host.innerHTML = '<div class="sr-loading"><span class="sr-spinner"></span><p>Loading…</p></div>';
+    host.innerHTML = '<div class="sr-loading"><span class="sr-spinner"></span><p>加载中…</p></div>';
 
     boot.then(function (bundle) {
       state.bundle = bundle;
       state.bundleCode = code;
       mountRunner(bundle, code);
     }).catch(function (err) {
-      host.innerHTML = '<div class="sr-error-fatal"><strong>Cannot load this scale.</strong><br>' +
+      host.innerHTML = '<div class="sr-error-fatal"><strong>无法加载该量表。</strong><br>' +
         esc(err.message) + '</div>';
     });
   }
@@ -551,21 +582,22 @@
     var nResp = Object.keys(record.responses).length;
 
     var card = $('#resultCard');
+    var runMeta = getScale(ctx.code);
     card.hidden = false;
     card.innerHTML = '' +
-      '<h2>' + esc(record.name) + '</h2>' +
-      '<p class="sub">Participant <code>' + esc(record.participant) + '</code> · ' +
-        stamp(record.ts) + ' · ' + nResp + ' responses · status ' + esc(record.status) + '</p>' +
+      '<h2>' + esc((runMeta && runMeta.name_zh) || record.name) + '</h2>' +
+      '<p class="sub">受试者 <code>' + esc(record.participant) + '</code> · ' +
+        stamp(record.ts) + ' · ' + nResp + ' 题作答 · 状态 ' + esc(record.status) + '</p>' +
       (boxes ? '<div class="score-grid">' + boxes + '</div>'
-             : '<p class="sub">This instrument declares no numeric dimensions.</p>') +
+             : '<p class="sub">该量表未声明数值型维度。</p>') +
       (computedRows ? '<table class="raw"><tbody>' + computedRows + '</tbody></table>' : '') +
       '<div class="actions">' +
-        '<button class="ghost" type="button" data-action="export-csv">Trial data (CSV)</button>' +
-        '<button class="ghost" type="button" data-action="export-pooled">Summary row (CSV)</button>' +
-        '<button class="ghost" type="button" data-action="export-report">Report (HTML)</button>' +
-        '<button class="ghost" type="button" data-action="export-json">Session (JSON)</button>' +
-        '<button class="primary" type="button" data-action="again" data-code="' + esc(ctx.code) + '">Run again</button>' +
-        '<button class="ghost" type="button" data-action="to-history">History</button>' +
+        '<button class="ghost" type="button" data-action="export-csv">逐题数据（CSV）</button>' +
+        '<button class="ghost" type="button" data-action="export-pooled">汇总行（CSV）</button>' +
+        '<button class="ghost" type="button" data-action="export-report">报告（HTML）</button>' +
+        '<button class="ghost" type="button" data-action="export-json">会话（JSON）</button>' +
+        '<button class="primary" type="button" data-action="again" data-code="' + esc(ctx.code) + '">重新施测</button>' +
+        '<button class="ghost" type="button" data-action="to-history">施测记录</button>' +
       '</div>';
 
     card._record = record;
@@ -594,8 +626,8 @@
   function renderHistory() {
     var host = $('#historyList');
     if (!state.history.length) {
-      host.innerHTML = '<div class="card empty"><p>No sessions recorded yet.</p>' +
-        '<p><a href="#/library">Open the library</a> to run a scale.</p></div>';
+      host.innerHTML = '<div class="card empty"><p>暂无施测记录。</p>' +
+        '<p><a href="#/library">打开量表库</a>，选择一个量表开始施测。</p></div>';
       return;
     }
     host.innerHTML = state.history.map(function (h) {
@@ -605,17 +637,17 @@
       return '' +
         '<article class="card hist-item" data-id="' + esc(h.id) + '">' +
           '<div class="top">' +
-            '<h3>' + esc(h.name) + '</h3>' +
+            '<h3>' + esc(zhName(getScale(h.code)) || h.name) + '</h3>' +
             '<span class="chip chip-code">' + esc(h.code) + '</span>' +
             '<span class="chip chip-soft">' + esc(h.lang) + '</span>' +
             (h.status === 'completed' ? '' : '<span class="chip">' + esc(h.status) + '</span>') +
             '<span class="when">' + esc(stamp(h.ts)) + '</span>' +
           '</div>' +
-          '<div class="scores">' + (chips || '<span class="chip chip-soft">no dimensions</span>') + '</div>' +
+          '<div class="scores">' + (chips || '<span class="chip chip-soft">无维度</span>') + '</div>' +
           '<div class="ops">' +
             '<button class="ghost" type="button" data-action="hist-csv">CSV</button>' +
             '<button class="ghost" type="button" data-action="hist-json">JSON</button>' +
-            '<button class="ghost danger" type="button" data-action="hist-del">Delete</button>' +
+            '<button class="ghost danger" type="button" data-action="hist-del">删除</button>' +
           '</div>' +
         '</article>';
     }).join('');
@@ -623,7 +655,7 @@
 
   function exportAllCSV() {
     var rows = state.history.filter(function (h) { return h.pooled && h.pooled.line; });
-    if (!rows.length) { alert('No pooled rows captured yet.'); return; }
+    if (!rows.length) { alert('尚未采集到汇总数据行。'); return; }
     var out = [rows[0].pooled.hdr].concat(rows.map(function (h) { return h.pooled.line; }));
     download('openscales-history.csv', out.join('\r\n') + '\r\n', 'text/csv;charset=utf-8');
   }
@@ -634,14 +666,14 @@
     err.hidden = true;
     var bundle;
     try { bundle = JSON.parse(text); }
-    catch (e) { err.textContent = 'Not valid JSON: ' + e.message; err.hidden = false; return; }
+    catch (e) { err.textContent = '不是合法的 JSON：' + e.message; err.hidden = false; return; }
 
     if (!bundle || typeof bundle !== 'object') {
-      err.textContent = 'Expected a JSON object.'; err.hidden = false; return;
+      err.textContent = '期望一个 JSON 对象。'; err.hidden = false; return;
     }
     if (!bundle.definition) {
       if (bundle.items) bundle = { bundle_version: 'imported', definition: bundle, translations: {} };
-      else { err.textContent = 'Missing a "definition" key — this is not an OSD bundle.'; err.hidden = false; return; }
+      else { err.textContent = '缺少 "definition" 键——这不是 OSD 数据包。'; err.hidden = false; return; }
     }
 
     var code = (bundle.definition.scale_info && bundle.definition.scale_info.code) ||
@@ -661,7 +693,7 @@
       fr.onload = function () { runImported(String(fr.result), f.name); };
       fr.onerror = function () {
         var err = $('#importError');
-        err.textContent = 'Could not read that file.'; err.hidden = false;
+        err.textContent = '无法读取该文件。'; err.hidden = false;
       };
       fr.readAsText(f);
       input.value = '';
@@ -718,7 +750,7 @@
         download('pooled-' + base + '.csv',
           (sd.pooledHdr || '') + '\r\n' + (sd.pooledLine || '') + '\r\n', 'text/csv;charset=utf-8');
       } else if (action === 'export-report') {
-        download(base + '-report.html', sd.reportHTML || '<p>No report generated.</p>', 'text/html;charset=utf-8');
+        download(base + '-report.html', sd.reportHTML || '<p>未生成报告。</p>', 'text/html;charset=utf-8');
       } else {
         download(base + '.json', JSON.stringify(rec, null, 2), 'application/json');
       }
@@ -758,7 +790,7 @@
     if (!Array.isArray(state.history)) state.history = [];
     state.filters = Object.assign({ q: '', pack: '', domain: '', license: '', lang: '', sort: 'name' },
                                   readStore('os_studio.filters', {}) || {});
-    state.lang = localStorage.getItem(LANG_KEY) || 'en';
+    state.lang = localStorage.getItem(LANG_KEY) || 'zh';
 
     state.languages = (window.OS_BUILD && window.OS_BUILD.languages) ||
       state.manifest.reduce(function (acc, m) {
@@ -791,7 +823,7 @@
     $('#btnExportAll').addEventListener('click', exportAllCSV);
     $('#btnClearHistory').addEventListener('click', function () {
       if (!state.history.length) return;
-      if (!confirm('Delete all ' + state.history.length + ' recorded sessions?')) return;
+      if (!confirm('确定要删除全部 ' + state.history.length + ' 条施测记录吗？')) return;
       state.history = [];
       writeStore(HISTORY_KEY, state.history);
       renderHistory();

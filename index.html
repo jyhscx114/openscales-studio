@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OpenScales Studio — Open Scale Definition library</title>
-<meta name="description" content="A zero-dependency front end for administering OpenScales OSD instruments: browse, run, score and export.">
+<title>OpenScales Studio — 开放量表定义库</title>
+<meta name="description" content="零依赖前端：浏览、运行、计分并导出 OpenScales OSD 量表，全部在本地完成。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%234f46e5'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='21' font-family='system-ui,sans-serif' font-size='13' font-weight='700' fill='%23fff' text-anchor='middle'%3EOS%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/app.css">
 <link rel="stylesheet" href="assets/scale-runner.css">
@@ -27,23 +27,23 @@
       <span class="brand-mark">OS</span>
       <span class="brand-text">
         <strong>OpenScales Studio</strong>
-        <small>Open Scale Definition library</small>
+        <small>开放量表定义（OSD）库</small>
       </span>
     </a>
 
     <nav class="nav" id="nav">
-      <a href="#/library" data-view="library">Library</a>
-      <a href="#/history" data-view="history">History</a>
-      <a href="#/import"  data-view="import">Import</a>
+      <a href="#/library" data-view="library">量表库</a>
+      <a href="#/history" data-view="history">施测记录</a>
+      <a href="#/import"  data-view="import">导入</a>
     </nav>
 
     <div class="topbar-right">
       <label class="lang">
-        <span>Language</span>
-        <select id="langSelect" aria-label="Administration language"></select>
+        <span>语言</span>
+        <select id="langSelect" aria-label="施测语言"></select>
       </label>
-      <button class="icon-btn" id="themeToggle" type="button" title="Toggle colour theme"
-              aria-label="Toggle colour theme">
+      <button class="icon-btn" id="themeToggle" type="button" title="切换深浅色主题"
+              aria-label="切换深浅色主题">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
              stroke-linecap="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
@@ -63,10 +63,10 @@
   <!-- ── Library ─────────────────────────────────────────────── -->
   <section id="view-library" class="view">
     <div class="hero">
-      <h1>Administer validated instruments in your browser.</h1>
+      <h1>在浏览器中运行已验证的量表。</h1>
       <p>
-        Every OSD scale is packaged locally and runs on-device — no server,
-        no upload, no network access required.
+        所有 OSD 量表均已本地打包并在设备端运行——无需服务器、
+        无需上传、无需联网。
       </p>
     </div>
 
@@ -79,32 +79,32 @@
           <circle cx="11" cy="11" r="7"></circle>
           <path d="m20 20-3.5-3.5"></path>
         </svg>
-        <input id="q" type="search" placeholder="Search name, abbreviation, code or description…" autocomplete="off">
+        <input id="q" type="search" placeholder="搜索名称、缩写、代码或描述…" autocomplete="off">
       </div>
       <div class="selects">
-        <select id="fPack"><option value="">All collections</option></select>
-        <select id="fDomain"><option value="">All domains</option></select>
-        <select id="fLicense"><option value="">All licences</option></select>
-        <select id="fLang"><option value="">All languages</option></select>
+        <select id="fPack"><option value="">全部集合</option></select>
+        <select id="fDomain"><option value="">全部领域</option></select>
+        <select id="fLicense"><option value="">全部许可</option></select>
+        <select id="fLang"><option value="">全部语言</option></select>
         <select id="fSort">
-          <option value="name">Sort: A–Z</option>
-          <option value="items-asc">Sort: fewest items</option>
-          <option value="items-desc">Sort: most items</option>
-          <option value="norms">Interpretation available</option>
+          <option value="name">排序：名称 A–Z</option>
+          <option value="items-asc">排序：题量最少</option>
+          <option value="items-desc">排序：题量最多</option>
+          <option value="norms">有结果解释</option>
         </select>
       </div>
-      <button id="btnReset" class="ghost" type="button">Reset</button>
+      <button id="btnReset" class="ghost" type="button">重置</button>
     </div>
 
     <p class="result-line"><span id="resultCount">—</span></p>
     <div id="grid" class="grid"></div>
     <div id="moreWrap" class="more" hidden>
-      <button class="ghost" type="button" data-action="more">Show more</button>
+      <button class="ghost" type="button" data-action="more">显示更多</button>
       <span id="moreNote"></span>
     </div>
     <div id="emptyState" class="empty" hidden>
-      <p>No scale matches those filters.</p>
-      <button class="ghost" type="button" data-action="reset">Clear filters</button>
+      <p>没有符合当前筛选条件的量表。</p>
+      <button class="ghost" type="button" data-action="reset">清除筛选</button>
     </div>
   </section>
 
@@ -114,7 +114,7 @@
   <!-- ── Runner ──────────────────────────────────────────────── -->
   <section id="view-run" class="view" hidden>
     <div class="run-head">
-      <button class="back" type="button" data-action="to-detail">← Back to scale</button>
+      <button class="back" type="button" data-action="to-detail">← 返回量表</button>
       <div class="run-head-text">
         <span id="runCode" class="chip"></span>
         <span id="runLang" class="chip chip-soft"></span>
@@ -127,12 +127,12 @@
   <!-- ── History ─────────────────────────────────────────────── -->
   <section id="view-history" class="view" hidden>
     <div class="hero hero-tight">
-      <h1>Session history</h1>
-      <p>Stored in this browser only. Clearing site data removes it permanently.</p>
+      <h1>施测记录</h1>
+      <p>仅保存在当前浏览器中。清除站点数据将永久删除，无法恢复。</p>
     </div>
     <div class="toolbar toolbar-row">
-      <button class="ghost" type="button" id="btnExportAll">Export all rows (CSV)</button>
-      <button class="ghost danger" type="button" id="btnClearHistory">Clear history</button>
+      <button class="ghost" type="button" id="btnExportAll">导出全部记录（CSV）</button>
+      <button class="ghost danger" type="button" id="btnClearHistory">清空记录</button>
     </div>
     <div id="historyList"></div>
   </section>
@@ -140,12 +140,12 @@
   <!-- ── Import ──────────────────────────────────────────────── -->
   <section id="view-import" class="view" hidden>
     <div class="hero hero-tight">
-      <h1>Run your own OSD file</h1>
-      <p>Drop a <code>.osd</code> bundle or any OSD JSON. Nothing leaves the device — the file is parsed locally.</p>
+      <h1>运行你自己的 OSD 文件</h1>
+      <p>拖入 <code>.osd</code> 数据包或任意 OSD JSON。数据不会离开本机——文件在本地完成解析。</p>
     </div>
     <div id="dropzone" class="dropzone">
-      <p><strong>Drop file here</strong> or <label class="link">browse<input id="fileInput" type="file" accept=".osd,.json,application/json"></label></p>
-      <small>Bundle format: <code>{ osd_version, definition, translations }</code></small>
+      <p><strong>将文件拖到此处</strong>或<label class="link">浏览<input id="fileInput" type="file" accept=".osd,.json,application/json"></label></p>
+      <small>数据包格式：<code>{ osd_version, definition, translations }</code></small>
       <p id="importError" class="error" hidden></p>
     </div>
   </section>
@@ -155,26 +155,27 @@
 <footer class="footer">
   <div class="footer-inner">
     <p>
-      Data: <a href="https://github.com/stmueller/OpenScales" target="_blank" rel="noopener">OpenScales</a> ·
-      Runner: <code>scale-runner.js</code> (MIT) ·
-      Licences apply per scale — check each record before reuse.
+      数据：<a href="https://github.com/stmueller/OpenScales" target="_blank" rel="noopener">OpenScales</a> ·
+      运行器：<code>scale-runner.js</code>（MIT）·
+      各量表的许可协议各不相同——复用前请逐条核对。
     </p>
     <p class="disclaimer">
-      Screening instruments support research and self-monitoring. They do not provide a diagnosis.
-      Seek a qualified clinician for interpretation.
+      筛查量表可用于科研与自我监测，不能替代临床诊断。
+      结果解读请咨询具备资质的专业人员。
     </p>
   </div>
 </footer>
 
 <div id="bootError" class="boot-error" hidden>
   <div class="card">
-    <h2>Scale data not found</h2>
+    <h2>未找到量表数据</h2>
     <p>
-      This build ships without bundled data. Run the packager against an
-      <a href="https://github.com/stmueller/OpenScales" target="_blank" rel="noopener">OpenScales</a> checkout:
+      当前版本未附带打包数据。请针对
+      <a href="https://github.com/stmueller/OpenScales" target="_blank" rel="noopener">OpenScales</a>
+      检出目录运行打包脚本：
     </p>
     <pre>python3 tools/build_data.py --source ../OpenScales</pre>
-    <p>Then reload this page.</p>
+    <p>然后重新加载本页面。</p>
   </div>
 </div>
 
