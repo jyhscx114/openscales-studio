@@ -35,6 +35,8 @@ that goes beyond internal work.
 
 from __future__ import annotations
 
+import direction  # inverted-agreement-scale detection/repair (see tools/direction.py)
+
 import argparse
 import json
 import os
@@ -143,7 +145,7 @@ def collect_osd_files(source: Path, pack: str):
     return sorted(root.glob("*/*.osd"))
 
 
-def build(source: Path, out: Path, packs: list[str]) -> int:
+def build(source: Path, out: Path, packs: list[str], fix_direction: bool = True) -> int:
     out.mkdir(parents=True, exist_ok=True)
     (out / "data").mkdir(exist_ok=True)
     (out / "data" / "scales").mkdir(exist_ok=True)
@@ -153,6 +155,28 @@ def build(source: Path, out: Path, packs: list[str]) -> int:
     written_js = 0
     bytes_total = 0
     seen_codes = {}
+
+    # Pass 1 — learn which endpoint order each label family actually uses.
+    # The correction is calibrated against the corpus itself, never hardcoded.
+    convention: dict[str, dict] = {}
+    audit: dict[str, Any] = {}
+    if fix_direction:
+        print("Scanning response-scale orientations…")
+        sample: list[tuple[str, dict, dict]] = []
+        for pack in packs:
+            for path in collect_osd_files(source, pack):
+                try:
+                    bundle = read_bundle(path)
+                except Exception:
+                    continue
+                sample.append((path.stem, bundle["definition"] or {},
+                               bundle.get("translations") or {}))
+        convention = direction.learn_convention(sample)
+        for family, info in sorted(convention.items()):
+            print(f"  {family:22} expects {info['expected']:10} "
+                  f"(pos-first={info['counts']['pos-first']}, "
+                  f"neg-first={info['counts']['neg-first']}, "
+                  f"{info['confidence']})")
 
     for pack in packs:
         files = collect_osd_files(source, pack)
@@ -165,11 +189,65 @@ def build(source: Path, out: Path, packs: list[str]) -> int:
                 continue
 
             definition = bundle["definition"] or {}
+            translations = bundle.get("translations") or {}
             info = definition.get("scale_info") or {}
             code = info.get("code") or path.stem
+
+            repaired = False
+            pending_audit = None
+            range_bug = direction.nonconforming_range(definition)
+
+            if range_bug:
+                before = direction.describe(definition, translations)
+                note = direction.repair_range(definition, translations)
+                direction.suppress_numbers(definition)
+                repaired = True
+                pending_audit = {
+                    "family": "nonconforming-range",
+                    "code_final": None,
+                    "reason": ("max does not equal min + points - 1; installed a "
+                               "value_map spreading the published endpoints across "
+                               "the options, leaving display order intact"),
+                    "endpoints": before,
+                    "scoring_blocks": note["blocks"],
+                    "codes_inverted": 0,
+                    "implicit_codes": 0,
+                    "value_map": note["map"],
+                    "example": note["example"],
+                    "skipped": [],
+                    "pack": pack,
+                }
+            elif fix_direction and isinstance(definition, dict):
+                found = direction.orientation(definition, translations)
+                if found:
+                    family, seen = found
+                    rule = convention.get(family)
+                    if rule and seen == rule["inverted"]:
+                        before = direction.describe(definition, translations)
+                        note = direction.repair(definition)
+                        if note["blocks"]:
+                            direction.suppress_numbers(definition)
+                            repaired = True
+                            pending_audit = {
+                            "family": family,
+                            "confidence": rule.get("confidence", "thin"),
+                            "code_final": None,
+                            "reason": ("first option is the high pole, but item coding "
+                                       "follows the low-pole-first convention used by "
+                                       f"{rule['counts'][rule['expected']]} sibling scales"),
+                            "endpoints": before,
+                            "scoring_blocks": note["blocks"],
+                            "codes_inverted": note["codes"],
+                            "implicit_codes": note["zero"],
+                                "skipped": note["skipped"],
+                                "pack": pack,
+                            }
             if code in seen_codes:
                 code = f"{code}__{pack}"
             seen_codes[code] = True
+            if pending_audit:
+                pending_audit["code_final"] = code
+                audit[code] = pending_audit
 
             fname = safe_name(code)
             target = out / "data" / "scales" / f"{fname}.js"
@@ -199,6 +277,7 @@ def build(source: Path, out: Path, packs: list[str]) -> int:
                 "dimensions": summarize_scales(definition),
                 "languages": langs,
                 "has_norms": has_norms(definition),
+                "direction_repaired": repaired,
                 "pack": pack,
                 "file": f"data/scales/{fname}.js",
                 "bytes": size,
@@ -243,11 +322,38 @@ def build(source: Path, out: Path, packs: list[str]) -> int:
     if missing:
         return 1
 
+    # The double-callback guard lives in upstream's runner, but nothing stops a
+    # future release from dropping it — and its loss silently duplicates every
+    # session record. Fail loudly instead.
+    runner_js = (out / "assets" / "scale-runner.js").read_text(encoding="utf-8")
+    if "navGeneration" not in runner_js:
+        print("  ! runner lost its stale-timer guard (navGeneration); refusing to build")
+        return 1
+
+    (out / "data" / "direction-audit.json").write_text(
+        json.dumps({
+            "note": ("Bundles whose agreement axis ran opposite to the rest of the "
+                     "corpus. Item coding was inverted at build time; the response "
+                     "order a participant sees was left untouched."),
+            "families": convention,
+            "repaired": audit,
+        }, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
     langs = sorted({l for m in manifest for l in m["languages"]})
     print()
     print(f"Built {len(manifest)} scales across {len(packs)} pack(s).")
-    print(f"  data/manifest.js  | {len(manifest)} entries")
-    print(f"  data/scales/*.js  | {written_js} files, {bytes_total / 1048576:.1f} MB")
+    print(f"  data/manifest.js        | {len(manifest)} entries")
+    print(f"  data/scales/*.js        | {written_js} files, {bytes_total / 1048576:.1f} MB")
+    if audit:
+        print(f"  direction repairs       | {len(audit)} scale(s)")
+        for changed in sorted(audit):
+            entry = audit[changed]
+            print(f"      {changed:12} {entry['endpoints']['first_option'][:26]:26} "
+                  f"→ {entry['endpoints']['last_option'][:26]}")
+    if not fix_direction:
+        print("  direction repairs       | DISABLED (--no-fix-direction)")
     print(f"  languages         | {len(langs)} ({', '.join(langs[:12])}{'…' if len(langs) > 12 else ''})")
     print(f"  output            | {out}")
     return 0
@@ -262,6 +368,8 @@ def main() -> int:
                     help="Destination directory holding index.html.")
     ap.add_argument("--include", default="openscales,phenx,ipip,miss,restricted",
                     help="Comma-separated packs; defaults to all of them.")
+    ap.add_argument("--no-fix-direction", action="store_true",
+                    help="Skip the inverted-agreement-scale repair (see tools/direction.py).")
     args = ap.parse_args()
 
     source = Path(args.source).expanduser().resolve()
@@ -271,7 +379,8 @@ def main() -> int:
         return 1
 
     packs = [p.strip() for p in args.include.split(",") if p.strip()]
-    return build(source, Path(args.out).expanduser().resolve(), packs)
+    return build(source, Path(args.out).expanduser().resolve(), packs,
+                 fix_direction=not args.no_fix_direction)
 
 
 if __name__ == "__main__":

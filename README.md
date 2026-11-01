@@ -55,9 +55,11 @@ openscales-studio/
 │   └── scale-runner.css    upstream runner stylesheet
 ├── data/
 │   ├── manifest.js         every scale's metadata as a plain assignment
+│   ├── direction-audit.json  bundles whose agreement axis was repaired
 │   └── scales/*.js         1,095 self-registering bundles, 24.2 MB total
 ├── tools/
-│   └── build_data.py       repackages an OpenScales checkout into data/
+│   ├── build_data.py       repackages an OpenScales checkout into data/
+│   └── direction.py        detects and repairs inverted agreement scales
 └── vendor/                 upstream material kept for offline reference
     ├── runner-original/    unmodified runner + chain-runner + scale-printer + server/
     ├── converters/         44 scripts: REDCap, Qualtrics, LimeSurvey, QTI, formr,
@@ -94,13 +96,65 @@ python3 tools/build_data.py --source ../OpenScales          # all packs
 python3 tools/build_data.py --source ../OpenScales --include openscales,phenx
 ```
 
+## Scoring-direction repairs in the data
+
+20 bundles shipped with their agreement axis running the wrong way, so agreeing
+scored the *minimum*. Both this corpus and the instruments' own text say which
+way is right:
+
+| Evidence | Example |
+|---|---|
+| Corpus convention | 103 bundles open with *Strongly disagree*; only 19 open with *Strongly agree* — and those 19 still use ordinary item coding |
+| The bundle contradicts itself | AQ: *"Agree" scores trait for items 2, 4, 5…* while those items are coded `+1` under `labels[0] = "definitely agree"`, `min = 0` |
+| The bundle contradicts itself | PSQ-III: *"Sum of 6 items (6-30). Higher = more satisfied"* but agreeing yields 1, not 5 |
+| The published key | SWLS runs 5–35 with higher = more satisfied; CBI maps Always…Never to 100/75/50/25/0 |
+
+The runner was never at fault: `SPECIFICATION.md` pins `min` to the leftmost
+option and defines `reversed = (min + max) − response`, and the runner follows
+both exactly. The defect is in the bundles.
+
+`tools/direction.py` fixes it at build time:
+
+1. **Invert every item code** in every scoring block. The response order shown
+   to participants is untouched — ordering effects are real, and printing the
+   options the way the instrument prints them is the whole point.
+2. **Hide the numeric axis** on those bundles (`show_numbers: "none"`), so
+   nobody is offered "0" next to *definitely agree*. Stored responses keep their
+   spec-conformant values.
+3. **CBI gets a `value_map`** instead: it is the only bundle whose axis breaks
+   the spec (`max` must equal `min + points − 1`), which is also why its
+   published 100/75/50/25/0 spacing had collapsed.
+
+Detection is calibrated against the corpus rather than hardcoded — a family is
+only judged once enough bundles vote, and families with thin support are marked
+`confidence: thin` for review (`SDRS5`, `PX180701`).
+
+Every touched bundle is listed in **`data/direction-audit.json`** with its
+endpoints, evidence and the exact number of inverted codes; affected rows in
+`manifest.js` carry `direction_repaired: true` and render a **scoring fixed**
+badge in the UI. Review with:
+
+```bash
+python3 -c "import json;print('\n'.join(json.load(open('data/direction-audit.json'))['repaired']))"
+python3 tools/build_data.py --source ../OpenScales --no-fix-direction   # opt out
+```
+
+Verification runs the real instrument in a browser and checks the totals
+against published keys: AQ all-disagree → **78**, all-agree → **72**;
+SWLS all-agree → **35**, all-disagree → **5**; CBI all-Always → **100**,
+all-Never → **0**.
+
 ## Applied fix to the vendored runner
 
-`assets/scale-runner.js` is upstream code plus one two-line patch, marked `PATCH (OpenScales Studio)`:
+`assets/scale-runner.js` carries one guard the upstream double-callback bug
+needs: `finish()` and `terminate()` bump `navGeneration`, so a pending likert
+auto-advance timer cannot fire after the run ends and invoke the completion
+callback twice (which used to write two records per session). The shell also
+refuses to record the same container twice.
 
-> `finish()` and `terminate()` now bump `navGeneration`. A pending likert auto-advance timer could otherwise fire after the run ended and invoke the completion callback a second time, duplicating the session record.
-
-The shell additionally refuses to record the same container twice. `vendor/runner-original/` holds the untouched files for diffing.
+`build_data.py` asserts the guard survives each rebuild, so an upstream release
+that drops it fails the build instead of silently corrupting history again.
+`vendor/runner-original/` holds the reference copy for diffing.
 
 ## Licence and attribution
 

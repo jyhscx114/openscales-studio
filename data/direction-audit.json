@@ -1,0 +1,350 @@
+{
+  "note": "Bundles whose agreement axis ran opposite to the rest of the corpus. Item coding was inverted at build time; the response order a participant sees was left untouched.",
+  "families": {
+    "POS_AGREE|NEG_AGREE": {
+      "expected": "neg-first",
+      "inverted": "pos-first",
+      "counts": {
+        "pos-first": 19,
+        "neg-first": 103
+      },
+      "confidence": "strong"
+    },
+    "POS_TRUE|NEG_TRUE": {
+      "expected": "neg-first",
+      "inverted": "pos-first",
+      "counts": {
+        "pos-first": 1,
+        "neg-first": 7
+      },
+      "confidence": "thin"
+    },
+    "POS_FREQ|NEG_FREQ": {
+      "expected": "neg-first",
+      "inverted": "pos-first",
+      "counts": {
+        "pos-first": 2,
+        "neg-first": 79
+      },
+      "confidence": "thin"
+    },
+    "POS_ACC|NEG_ACC": {
+      "expected": "neg-first",
+      "inverted": "pos-first",
+      "counts": {
+        "pos-first": 0,
+        "neg-first": 357
+      },
+      "confidence": "thin"
+    }
+  },
+  "repaired": {
+    "CBI": {
+      "family": "nonconforming-range",
+      "code_final": "CBI",
+      "reason": "max does not equal min + points - 1; installed a value_map spreading the published endpoints across the options, leaving display order intact",
+      "endpoints": {
+        "first_option": "Always",
+        "last_option": "Never/almost never"
+      },
+      "scoring_blocks": 3,
+      "codes_inverted": 0,
+      "implicit_codes": 0,
+      "value_map": {
+        "0": 100,
+        "1": 75,
+        "2": 50,
+        "3": 25,
+        "4": 0
+      },
+      "example": "Always -> 100, Never/almost never -> 0",
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "CSQ-SF": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "CSQ-SF",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 6,
+      "codes_inverted": 144,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "DISS": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "DISS",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 5,
+      "codes_inverted": 25,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "EMTL": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "EMTL",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 3,
+      "codes_inverted": 15,
+      "implicit_codes": 15,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "ESS-CB": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "ESS-CB",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Agree strongly",
+        "last_option": "Disagree strongly"
+      },
+      "scoring_blocks": 2,
+      "codes_inverted": 5,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "ESS-LA": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "ESS-LA",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Agree strongly",
+        "last_option": "Disagree strongly"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 3,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "PMFM": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "PMFM",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 4,
+      "codes_inverted": 12,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "PSQ-III": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "PSQ-III",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly Agree",
+        "last_option": "Strongly Disagree"
+      },
+      "scoring_blocks": 7,
+      "codes_inverted": 50,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "PSQ18": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "PSQ18",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly Agree",
+        "last_option": "Strongly Disagree"
+      },
+      "scoring_blocks": 7,
+      "codes_inverted": 18,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "SDRS5": {
+      "family": "POS_TRUE|NEG_TRUE",
+      "confidence": "thin",
+      "code_final": "SDRS5",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 7 sibling scales",
+      "endpoints": {
+        "first_option": "Definitely True",
+        "last_option": "Definitely False"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 5,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "SWLS": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "SWLS",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 5,
+      "implicit_codes": 5,
+      "skipped": [],
+      "pack": "openscales"
+    },
+    "PX311101": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "PX311101",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 6,
+      "implicit_codes": 3,
+      "skipped": [],
+      "pack": "phenx"
+    },
+    "PX311401": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "PX311401",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly Agree",
+        "last_option": "Strongly Disagree"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 4,
+      "implicit_codes": 2,
+      "skipped": [],
+      "pack": "phenx"
+    },
+    "PX640903": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "PX640903",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly Agree",
+        "last_option": "Strongly Disagree"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 74,
+      "implicit_codes": 37,
+      "skipped": [],
+      "pack": "phenx"
+    },
+    "PX870202": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "PX870202",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly Agree",
+        "last_option": "Strongly Disagree"
+      },
+      "scoring_blocks": 3,
+      "codes_inverted": 21,
+      "implicit_codes": 21,
+      "skipped": [],
+      "pack": "phenx"
+    },
+    "MISS11035": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "MISS11035",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 4,
+      "implicit_codes": 4,
+      "skipped": [],
+      "pack": "miss"
+    },
+    "MISS11131": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "MISS11131",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Agree completely",
+        "last_option": "Disagree completely"
+      },
+      "scoring_blocks": 4,
+      "codes_inverted": 4,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "miss"
+    },
+    "AQ": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "AQ",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "definitely agree",
+        "last_option": "definitely disagree"
+      },
+      "scoring_blocks": 6,
+      "codes_inverted": 100,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "restricted"
+    },
+    "FS": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "FS",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 8,
+      "implicit_codes": 8,
+      "skipped": [],
+      "pack": "restricted"
+    },
+    "OCS-ISSP": {
+      "family": "POS_AGREE|NEG_AGREE",
+      "confidence": "strong",
+      "code_final": "OCS-ISSP",
+      "reason": "first option is the high pole, but item coding follows the low-pole-first convention used by 103 sibling scales",
+      "endpoints": {
+        "first_option": "Strongly agree",
+        "last_option": "Strongly disagree"
+      },
+      "scoring_blocks": 1,
+      "codes_inverted": 3,
+      "implicit_codes": 0,
+      "skipped": [],
+      "pack": "restricted"
+    }
+  }
+}

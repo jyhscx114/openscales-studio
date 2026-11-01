@@ -280,6 +280,7 @@
           '<span class="chip">' + esc(m.domain) + '</span>' +
           (m.pack !== 'openscales' ? '<span class="chip chip-soft">' + esc(m.pack) + '</span>' : '') +
           (m.has_norms ? '<span class="chip chip-good">interpretation</span>' : '') +
+          (m.direction_repaired ? '<span class="chip chip-repair">scoring fixed</span>' : '') +
         '</div>' +
         '<h3>' + esc(m.abbreviation ? m.abbreviation + ' — ' + m.name : m.name) + '</h3>' +
         '<p class="desc">' + esc(m.description || 'No description provided.') + '</p>' +
@@ -378,6 +379,17 @@
   }
 
   // ── detail ───────────────────────────────────────────────
+  // Bundles whose agreement axis ran against the rest of the corpus. Say so
+  // out loud: a reviewer must be able to see that we touched the scoring.
+  function repairNote(m) {
+    if (!m.direction_repaired) return '';
+    return 'Scoring note — this bundle shipped with its agreement options '
+         + 'reversed relative to the convention used elsewhere in the library, '
+         + 'so agreeing scored the minimum. Item coding was inverted at build '
+         + 'time; the response order shown to participants is unchanged. '
+         + 'See data/direction-audit.json.';
+  }
+
   function renderDetail(code) {
     var m = getScale(code);
     var host = $('#view-detail');
@@ -402,6 +414,7 @@
             ' · ' + m.items_count + ' items · ' + esc(m.license) + '</p>' +
           '<div class="detail-body">' +
             '<p>' + esc(m.description || 'No description provided.') + '</p>' +
+            (repairNote(m) ? '<p class="repair-note">' + esc(repairNote(m)) + '</p>' : '') +
             (m.citation ? '<p class="citation">' + esc(m.citation) + '</p>' : '') +
             (m.license_explanation ? '<p class="citation"><em>' + esc(m.license_explanation) + '</em></p>' : '') +
           '</div>' +
